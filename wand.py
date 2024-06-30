@@ -59,12 +59,19 @@ def main(stdscr, filename):
             cursor_x = 0
             cursor_y += 1
         elif key == 27:
+            while True:
+                stdscr.addstr(len(content), 0, "Save changes before exiting? [y/n]: ")
+                stdscr.refresh()
+                confirm_key = stdscr.getch()
+                if confirm_key in (ord("y"), ord("Y")):
+                    save_file(filename, content)
+                    break
+                elif confirm_key in (ord("n"), ord("N")):
+                    break
             break
         else:
             content[cursor_y] = content[cursor_y][:cursor_x] + chr(key) + content[cursor_y][cursor_x:]
             cursor_x += 1
-
-    save_file(filename, content)
 
 
 if __name__ == "__main__":
