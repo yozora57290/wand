@@ -1,10 +1,24 @@
 import curses
+import sys
 
 
-def main(stdscr):
+def open_file(filename):
+    try:
+        with open(filename, "r") as file:
+            return file.read().splitlines()
+    except FileNotFoundError:
+        return [""]
+
+
+def save_file(filename, content):
+    with open(filename, "w") as file:
+        file.write("\n".join(content))
+
+
+def main(stdscr, filename):
     cursor_x = 0
     cursor_y = 0
-    content = [""]
+    content = open_file(filename)
 
     while True:
         stdscr.clear()
@@ -50,6 +64,12 @@ def main(stdscr):
             content[cursor_y] = content[cursor_y][:cursor_x] + chr(key) + content[cursor_y][cursor_x:]
             cursor_x += 1
 
+    save_file(filename, content)
+
 
 if __name__ == "__main__":
-    curses.wrapper(main)
+    if len(sys.argv) < 2:
+        filename = "untitled"
+    else:
+        filename = sys.argv[1]
+    curses.wrapper(main, filename)
