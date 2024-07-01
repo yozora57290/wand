@@ -40,7 +40,7 @@ def save_as_file(stdscr, content):
 
 
 def command_palette(stdscr, filename, content):
-    options = ["Save", "Save As", "Exit", "Save & Exit"]
+    options = ["Save", "Save As", "Exit", "Save & Exit", "Cancel"]
     option_index = 0
     stdscr.clear()
     curses.curs_set(0)
@@ -72,6 +72,8 @@ def command_palette(stdscr, filename, content):
             elif selected_option == "Save & Exit":
                 save_file(filename, content)
                 return True
+            elif selected_option == "Cancel":
+                break
             return False
     curses.curs_set(1)
 
