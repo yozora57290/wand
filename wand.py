@@ -15,6 +15,36 @@ def save_file(filename, content):
         file.write("\n".join(content))
 
 
+def command_palette(stdscr, filename, content):
+    options = ["Save", "Exit", "Save & Exit"]
+    option_index = 0
+    stdscr.clear()
+    while True:
+        stdscr.addstr(0, 0, "[Command Palette]")
+        for index, option in enumerate(options):
+            if index == option_index:
+                stdscr.addstr(index + 1, 2, f"> {option}")
+            else:
+                stdscr.addstr(index + 1, 2, f"  {option}")
+        stdscr.refresh()
+        key = stdscr.getch()
+        if key == curses.KEY_UP:
+            option_index = (option_index - 1) % len(options)
+        elif key == curses.KEY_DOWN:
+            option_index = (option_index + 1) % len(options)
+        elif key in (curses.KEY_ENTER, 10, 13):
+            selected_option = options[option_index]
+            if selected_option == "Save":
+                save_file(filename, content)
+                break
+            elif selected_option == "Exit":
+                return True
+            elif selected_option == "Save & Exit":
+                save_file(filename, content)
+                return True
+            return False
+
+
 def main(stdscr, filename):
     cursor_x = 0
     cursor_y = 0
@@ -64,6 +94,9 @@ def main(stdscr, filename):
             content[cursor_y] = content[cursor_y][:cursor_x]
             cursor_x = 0
             cursor_y += 1
+        elif key == 16:
+            if command_palette(stdscr, filename, content):
+                break
         elif key == 27:
             while True:
                 stdscr.addstr(len(content), 0, "Save changes before exiting? [y/n]: ")
