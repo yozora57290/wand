@@ -32,6 +32,7 @@ def command_palette(stdscr, filename, content):
     options = ["Save", "Exit", "Save & Exit"]
     option_index = 0
     stdscr.clear()
+    curses.curs_set(0)
     while True:
         stdscr.addstr(0, 0, "[Command Palette]")
         for index, option in enumerate(options):
@@ -56,6 +57,7 @@ def command_palette(stdscr, filename, content):
                 save_file(filename, content)
                 return True
             return False
+    curses.curs_set(1)
 
 
 def main(stdscr, filename):
