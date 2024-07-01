@@ -40,11 +40,17 @@ def main(stdscr, filename):
                 cursor_y += 1
                 cursor_x = 0
         elif key == curses.KEY_UP:
-            cursor_y = max(0, cursor_y - 1)
-            cursor_x = min(cursor_x, len(content[cursor_y]))
+            if cursor_y > 0:
+                cursor_y = max(0, cursor_y - 1)
+                cursor_x = min(cursor_x, len(content[cursor_y]))
+            else:
+                cursor_x = 0
         elif key == curses.KEY_DOWN:
-            cursor_y = min(len(content) - 1, cursor_y + 1)
-            cursor_x = min(cursor_x, len(content[cursor_y]))
+            if cursor_y < len(content) - 1:
+                cursor_y = min(len(content) - 1, cursor_y + 1)
+                cursor_x = min(cursor_x, len(content[cursor_y]))
+            else:
+                cursor_x = len(content[cursor_y])
         elif key in (curses.KEY_BACKSPACE, 127):
             if cursor_x > 0:
                 content[cursor_y] = content[cursor_y][: cursor_x - 1] + content[cursor_y][cursor_x:]
