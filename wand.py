@@ -134,8 +134,12 @@ def main(stdscr, filename):
             if command_palette(stdscr, filename, content):
                 break
         else:
-            content[cursor_y] = content[cursor_y][:cursor_x] + chr(key) + content[cursor_y][cursor_x:]
-            cursor_x += 1
+            if content:
+                content[cursor_y] = content[cursor_y][:cursor_x] + chr(key) + content[cursor_y][cursor_x:]
+                cursor_x += 1
+            else:
+                content.append(chr(key))
+                cursor_x += 1
 
 
 if __name__ == "__main__":
