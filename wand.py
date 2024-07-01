@@ -126,7 +126,7 @@ def main(stdscr, filename):
             content[cursor_y] = content[cursor_y][:cursor_x]
             cursor_x = 0
             cursor_y += 1
-        elif key == 16:
+        elif key in (16, 27):
             if command_palette(stdscr, filename, content):
                 break
         else:
