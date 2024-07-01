@@ -129,17 +129,6 @@ def main(stdscr, filename):
         elif key == 16:
             if command_palette(stdscr, filename, content):
                 break
-        elif key == 27:
-            while True:
-                stdscr.addstr(len(content), 0, "Save changes before exiting? [y/n]: ")
-                stdscr.refresh()
-                confirm_key = stdscr.getch()
-                if confirm_key in (ord("y"), ord("Y")):
-                    save_file(filename, content)
-                    break
-                elif confirm_key in (ord("n"), ord("N")):
-                    break
-            break
         else:
             content[cursor_y] = content[cursor_y][:cursor_x] + chr(key) + content[cursor_y][cursor_x:]
             cursor_x += 1
