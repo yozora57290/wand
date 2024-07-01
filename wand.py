@@ -63,7 +63,9 @@ def command_palette(stdscr, filename, content):
                 save_file(filename, content)
                 break
             elif selected_option == "Save As":
+                curses.curs_set(1)
                 save_as_file(stdscr, content)
+                curses.curs_set(0)
                 break
             elif selected_option == "Exit":
                 return True
