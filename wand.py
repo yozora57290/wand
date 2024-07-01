@@ -28,8 +28,19 @@ def save_file(filename, content):
         print(f"Error: Failed to save file. ({e})")
 
 
+def save_as_file(stdscr, content):
+    stdscr.clear()
+    stdscr.addstr(0, 0, "Save As: ")
+    curses.echo()
+    filename = stdscr.getstr().decode("utf-8")
+    curses.noecho()
+    if not filename:
+        return
+    save_file(filename, content)
+
+
 def command_palette(stdscr, filename, content):
-    options = ["Save", "Exit", "Save & Exit"]
+    options = ["Save", "Save As", "Exit", "Save & Exit"]
     option_index = 0
     stdscr.clear()
     curses.curs_set(0)
@@ -50,6 +61,9 @@ def command_palette(stdscr, filename, content):
             selected_option = options[option_index]
             if selected_option == "Save":
                 save_file(filename, content)
+                break
+            elif selected_option == "Save As":
+                save_as_file(stdscr, content)
                 break
             elif selected_option == "Exit":
                 return True
