@@ -1,18 +1,31 @@
 import curses
 import sys
+import os
+
+
+def validate_filepath(filepath):
+    if not os.path.isfile(filepath):
+        filepath = os.path.abspath(filepath)
+    return filepath
 
 
 def open_file(filename):
     try:
         with open(filename, "r") as file:
             return file.read().splitlines()
-    except FileNotFoundError:
+    except FileNotFoundError as e:
+        print(f"Error: Failed to open file. ({e})")
         return [""]
+    except IOError as e:
+        print(f"Error: Failed to open file. ({e})")
 
 
 def save_file(filename, content):
-    with open(filename, "w") as file:
-        file.write("\n".join(content))
+    try:
+        with open(filename, "w") as file:
+            file.write("\n".join(content))
+    except IOError as e:
+        print(f"Error: Failed to save file. ({e})")
 
 
 def command_palette(stdscr, filename, content):
@@ -48,6 +61,7 @@ def command_palette(stdscr, filename, content):
 def main(stdscr, filename):
     cursor_x = 0
     cursor_y = 0
+    filename = validate_filepath(filename)
     content = open_file(filename)
 
     while True:
