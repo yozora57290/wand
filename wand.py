@@ -50,7 +50,9 @@ def command_palette(stdscr, filename, content):
         stdscr.addstr(0, 0, "[Command Palette]")
         for index, option in enumerate(options):
             if index == option_index:
+                stdscr.attron(curses.A_BOLD)
                 stdscr.addstr(index + 1, 2, f"> {option}")
+                stdscr.attroff(curses.A_BOLD)
             else:
                 stdscr.addstr(index + 1, 2, f"  {option}")
         stdscr.refresh()
