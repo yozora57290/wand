@@ -22,6 +22,8 @@ def open_file(filename):
 
 def save_file(filename, content):
     try:
+        if content and not content[-1].endswith("\n"):
+            content.append("")
         with open(filename, "w") as file:
             file.write("\n".join(content))
     except IOError as e:
