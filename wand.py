@@ -9,7 +9,7 @@ def validate_filepath(filepath):
     return filepath
 
 
-def open_file(filename):
+def read_file(filename):
     try:
         with open(filename, "r") as file:
             return file.read().splitlines()
@@ -44,7 +44,7 @@ def save_as_file(stdscr, content):
 
 def command_palette(stdscr, filename, content):
     options = ["Save", "Save As", "Exit", "Save & Exit", "Cancel"]
-    option_index = 0
+    selected_index = 0
     curses.curs_set(0)
     while True:
         stdscr.clear()
@@ -60,7 +60,7 @@ def command_palette(stdscr, filename, content):
         window.box()
         window.addstr(1, 2, "[Command Palette]")
         for index, option in enumerate(options):
-            if index == option_index:
+            if index == selected_index:
                 window.attron(curses.A_BOLD)
                 window.addstr(index + 2, 2, f"> {option}")
                 window.attroff(curses.A_BOLD)
@@ -70,11 +70,11 @@ def command_palette(stdscr, filename, content):
         window.refresh()
         key = stdscr.getch()
         if key == curses.KEY_UP:
-            option_index = (option_index - 1) % len(options)
+            selected_index = (selected_index - 1) % len(options)
         elif key == curses.KEY_DOWN:
-            option_index = (option_index + 1) % len(options)
+            selected_index = (selected_index + 1) % len(options)
         elif key in (curses.KEY_ENTER, 10, 13):
-            selected_option = options[option_index]
+            selected_option = options[selected_index]
             if selected_option == "Save":
                 save_file(filename, content)
                 break
@@ -98,7 +98,7 @@ def main(stdscr, filename):
     cursor_x = 0
     cursor_y = 0
     filename = validate_filepath(filename)
-    content = open_file(filename)
+    content = read_file(filename)
 
     curses.start_color()
     curses.init_pair(1, 8, curses.COLOR_BLACK)
@@ -168,8 +168,4 @@ def main(stdscr, filename):
 
 
 if __name__ == "__main__":
-    if len(sys.argv) < 2:
-        filename = "untitled"
-    else:
-        filename = sys.argv[1]
-    curses.wrapper(main, filename)
+    curses.wrapper(main, sys.argv[1] if len(sys.argv) > 1 else "Untitled")
