@@ -22,10 +22,11 @@ def read_file(filename):
 
 def save_file(filename, content):
     try:
-        if content and not content[-1].endswith("\n"):
-            content.append("")
         with open(filename, "w") as file:
-            file.write("\n".join(content))
+            if content and not content[-1].endswith("\n"):
+                file.write("\n".join(content) + "\n")
+            else:
+                file.write("\n".join(content))
     except IOError as e:
         print(f"Error: Failed to save file. ({e})")
 
