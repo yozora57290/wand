@@ -131,6 +131,9 @@ def main(stdscr, filename):
                 cursor_x = min(cursor_x, len(content[cursor_y]))
             else:
                 cursor_x = len(content[cursor_y])
+        elif key == 9:
+            content[cursor_y] = content[cursor_y][:cursor_x] + "    " + content[cursor_y][cursor_x:]
+            cursor_x += 4
         elif key in (curses.KEY_BACKSPACE, 127):
             if cursor_x > 0:
                 content[cursor_y] = content[cursor_y][: cursor_x - 1] + content[cursor_y][cursor_x:]
