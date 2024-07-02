@@ -100,13 +100,18 @@ def main(stdscr, filename):
     filename = validate_filepath(filename)
     content = open_file(filename)
 
+    curses.start_color()
+    curses.init_pair(1, 8, curses.COLOR_BLACK)
+    curses.init_pair(2, curses.COLOR_WHITE, curses.COLOR_BLACK)
+
     while True:
         stdscr.clear()
         max_lines_display = curses.LINES - 1
         for index, line in enumerate(content):
             line_number = index + 1
             if index < max_lines_display:
-                stdscr.addstr(index, 0, f"{line_number}: {line}")
+                stdscr.addstr(index, 0, f"{line_number}: ", curses.color_pair(1))
+                stdscr.addstr(f"{line}", curses.color_pair(2))
         stdscr.move(cursor_y, len(str(len(content))) + 2 + cursor_x)
         stdscr.refresh()
         key = stdscr.getch()
