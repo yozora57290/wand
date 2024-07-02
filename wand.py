@@ -44,18 +44,29 @@ def save_as_file(stdscr, content):
 def command_palette(stdscr, filename, content):
     options = ["Save", "Save As", "Exit", "Save & Exit", "Cancel"]
     option_index = 0
-    stdscr.clear()
     curses.curs_set(0)
     while True:
-        stdscr.addstr(0, 0, "[Command Palette]")
+        stdscr.clear()
+        height, width = stdscr.getmaxyx()
+        palette_width = max(len(option) for option in options) + 6
+        palette_height = len(options) + 4
+        min_palette_width = 50
+        if palette_width < min_palette_width:
+            palette_width = min_palette_width
+        start_x = (width - palette_width) // 2
+        start_y = (height - palette_height) // 2
+        window = curses.newwin(palette_height, palette_width, start_y, start_x)
+        window.box()
+        window.addstr(1, 2, "[Command Palette]")
         for index, option in enumerate(options):
             if index == option_index:
-                stdscr.attron(curses.A_BOLD)
-                stdscr.addstr(index + 1, 2, f"> {option}")
-                stdscr.attroff(curses.A_BOLD)
+                window.attron(curses.A_BOLD)
+                window.addstr(index + 2, 2, f"> {option}")
+                window.attroff(curses.A_BOLD)
             else:
-                stdscr.addstr(index + 1, 2, f"  {option}")
+                window.addstr(index + 2, 2, f"  {option}")
         stdscr.refresh()
+        window.refresh()
         key = stdscr.getch()
         if key == curses.KEY_UP:
             option_index = (option_index - 1) % len(options)
