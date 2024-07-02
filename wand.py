@@ -102,9 +102,12 @@ def main(stdscr, filename):
 
     while True:
         stdscr.clear()
+        max_lines_display = curses.LINES - 1
         for index, line in enumerate(content):
-            stdscr.addstr(index, 0, line)
-        stdscr.move(cursor_y, cursor_x)
+            line_number = index + 1
+            if index < max_lines_display:
+                stdscr.addstr(index, 0, f"{line_number}: {line}")
+        stdscr.move(cursor_y, len(str(len(content))) + 2 + cursor_x)
         stdscr.refresh()
         key = stdscr.getch()
         if key == curses.KEY_LEFT:
