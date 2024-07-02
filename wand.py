@@ -31,14 +31,15 @@ def save_file(filename, content):
 
 
 def save_as_file(stdscr, content):
-    stdscr.clear()
-    stdscr.addstr(0, 0, "Save As: ")
-    curses.echo()
-    filename = stdscr.getstr().decode("utf-8")
-    curses.noecho()
-    if not filename:
-        return
-    save_file(filename, content)
+    while True:
+        stdscr.clear()
+        stdscr.addstr(0, 0, "Save As: ")
+        curses.echo()
+        filename = stdscr.getstr().decode("utf-8")
+        curses.noecho()
+        if filename.strip():
+            save_file(filename, content)
+            break
 
 
 def command_palette(stdscr, filename, content):
