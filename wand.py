@@ -51,7 +51,7 @@ def command_palette(stdscr, filename, content):
         stdscr.clear()
         height, width = stdscr.getmaxyx()
         palette_width = max(len(option) for option in options) + 6
-        palette_height = len(options) + 4
+        palette_height = len(options) + 5
         min_palette_width = 50
         if palette_width < min_palette_width:
             palette_width = min_palette_width
@@ -60,13 +60,14 @@ def command_palette(stdscr, filename, content):
         window = curses.newwin(palette_height, palette_width, start_y, start_x)
         window.box()
         window.addstr(1, 2, "[Command Palette]")
+        window.addstr(2, 2, "")
         for index, option in enumerate(options):
             if index == selected_index:
                 window.attron(curses.A_BOLD)
-                window.addstr(index + 2, 2, f"> {option}")
+                window.addstr(index + 3, 2, f"> {option}")
                 window.attroff(curses.A_BOLD)
             else:
-                window.addstr(index + 2, 2, f"  {option}")
+                window.addstr(index + 3, 2, f"  {option}")
         stdscr.refresh()
         window.refresh()
         key = stdscr.getch()
