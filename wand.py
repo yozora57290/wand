@@ -146,8 +146,12 @@ def main(stdscr, filename):
             cursor_x += 4
         elif key in (curses.KEY_BACKSPACE, 127):
             if cursor_x > 0:
-                content[cursor_y] = content[cursor_y][: cursor_x - 1] + content[cursor_y][cursor_x:]
-                cursor_x -= 1
+                if cursor_x >= 4 and content[cursor_y][cursor_x - 4 : cursor_x] == "    ":
+                    content[cursor_y] = content[cursor_y][: cursor_x - 4] + content[cursor_y][cursor_x:]
+                    cursor_x -= 4
+                else:
+                    content[cursor_y] = content[cursor_y][: cursor_x - 1] + content[cursor_y][cursor_x:]
+                    cursor_x -= 1
             elif cursor_y > 0:
                 cursor_x = len(content[cursor_y - 1])
                 content[cursor_y - 1] += content.pop(cursor_y)
